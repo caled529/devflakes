@@ -9,6 +9,7 @@
     self,
     nixpkgs,
   }: let
+    flake_name = "go-db";
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
@@ -19,13 +20,13 @@
   in {
     devShells.${system}.default = with pkgs;
       mkShell {
-        buildInputs = [
+        packages = [
           delve
           go
           gopls
         ];
         shellHook = ''
-          PS1='[\t] \[\e[94m\]\u@devflakes.go-sdl2\[\e[0m\] \[\e[95m\]\W\[\e[0m\] \$ '
+          PS1='[\t] \[\e[94m\]\u@devflakes.${flake_name}\[\e[0m\] \[\e[95m\]\W\[\e[0m\] \$ '
           go mod tidy
           # Want to allow for the debugger to attach to running go programs for stdin
           # Currently these commands are not permitted due to rofs limitations

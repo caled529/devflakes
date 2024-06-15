@@ -9,6 +9,7 @@
     self,
     nixpkgs,
   }: let
+    flake_name = "go-sdl2";
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
@@ -19,7 +20,7 @@
   in {
     devShells.${system}.default = with pkgs;
       mkShell {
-        buildInputs = [
+        packages = [
           go
           gopls
           pkg-config
@@ -32,7 +33,7 @@
           SDL2_ttf
         ];
         shellHook = ''
-          PS1='[\t] \[\e[94m\]\u@devflakes.go-sdl2\[\e[0m\] \[\e[95m\]\W\[\e[0m\] \$ '
+          PS1='[\t] \[\e[94m\]\u@devflakes.${flake_name}\[\e[0m\] \[\e[95m\]\W\[\e[0m\] \$ '
           go mod tidy
         '';
       };
