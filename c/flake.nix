@@ -17,17 +17,12 @@
       };
     };
   in {
-    devShells.${system}.default = with pkgs; let
-      # The name used to distinguish which shell you're using from the prompt
-      name = "c";
-    in
-      mkShell {
+    devShells.${system} = with pkgs; {
+      default = mkShell {
         packages = [
           clang-tools
         ];
-        shellHook = ''
-          PS1='[\t] \[\e[94m\]\u@devflakes.${name}\[\e[0m\] \[\e[95m\]\W\[\e[0m\] \$ '
-        '';
       };
+    };
   };
 }
