@@ -20,7 +20,25 @@
     devShells.${system} = with pkgs; {
       default = mkShell {
         packages = [
-          jdk21
+          jdk
+          jdt-language-server
+        ];
+        shellHook = ''
+          # Environment variables needed by my jdtls config for neovim on nixos
+          export JDTLS_STORE_PATH="${pkgs.jdt-language-server}"
+          mkdir -p jdtls/data ~/.language-servers/jdtls/config
+          export JDTLS_CONFIG_DIR=$(readlink -f ~/.language-servers/jdtls/config)
+          export JDTLS_DATA_DIR=$(readlink -f ./jdtls)
+          # Nice aliases when working without a build system for java
+          alias javac="javac -sourcepath src -d out"
+          alias java="java -cp out"
+          alias jrun='function _run(){ javac src/$1.java; java $1; };_run'
+        '';
+      };
+
+      "22" = mkShell {
+        packages = [
+          jdk22
           jdt-language-server
         ];
         shellHook = ''
