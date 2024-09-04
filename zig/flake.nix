@@ -19,30 +19,20 @@
       };
     };
   in {
-    devShells.${system}.default = with pkgs; let
-      name = "zig";
-    in
-      mkShell {
+    devShells.${system} = with pkgs; {
+      default = mkShell {
         packages = [
           zig
           zls
         ];
-        shellHook = ''
-          PS1='[\t] \[\e[94m\]\u@devflakes.${name}\[\e[0m\] \[\e[95m\]\W\[\e[0m\] \$ '
-        '';
       };
 
-    devShells.${system}.dev = with pkgs; let
-      name = "zig-dev";
-    in
-      mkShell {
+      dev = mkShell {
         packages = [
-          zig.overlays
+          zig.lastModified
           zls
         ];
-        shellHook = ''
-          PS1='[\t] \[\e[94m\]\u@devflakes.${name}\[\e[0m\] \[\e[95m\]\W\[\e[0m\] \$ '
-        '';
       };
+    };
   };
 }

@@ -17,8 +17,8 @@
       };
     };
   in {
-    devShells.${system}.default = with pkgs;
-      mkShell {
+    devShells.${system} = with pkgs; {
+      default = mkShell {
         packages = [
           go
           gopls
@@ -28,10 +28,7 @@
         '';
       };
 
-    devShells.${system}.sdl2 = with pkgs; let
-      name = "go-sdl2";
-    in
-      mkShell {
+      sdl2 = mkShell {
         packages = [
           go
           gopls
@@ -45,22 +42,17 @@
           SDL2_ttf
         ];
         shellHook = ''
-          PS1='[\t] \[\e[94m\]\u@devflakes.${name}\[\e[0m\] \[\e[95m\]\W\[\e[0m\] \$ '
           go mod tidy
         '';
       };
 
-    devShells.${system}.db = with pkgs; let
-      name = "go-db";
-    in
-      mkShell {
+      db = mkShell {
         packages = [
           delve
           go
           gopls
         ];
         shellHook = ''
-          PS1='[\t] \[\e[94m\]\u@devflakes.${name}\[\e[0m\] \[\e[95m\]\W\[\e[0m\] \$ '
           go mod tidy
           # Want to allow for the debugger to attach to running go programs
           # Currently these commands are not permitted due to rofs limitations
@@ -68,5 +60,6 @@
           sudo setcap cap_sys_ptrace=ep ${pkgs.delve}/bin/.dlv-wrapped
         '';
       };
+    };
   };
 }
