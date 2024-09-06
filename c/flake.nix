@@ -3,26 +3,29 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
   };
 
   outputs = {
     self,
     nixpkgs,
-  }: let
-    system = "x86_64-linux";
-    pkgs = import nixpkgs {
-      inherit system;
-      config = {
-        allowUnfree = true;
-      };
-    };
-  in {
-    devShells.${system} = with pkgs; {
-      default = mkShell {
-        packages = [
-          clang-tools
-        ];
-      };
-    };
-  };
+    flake-utils,
+  }:
+    with flake-utils.lib;
+      eachSystem allSystems (system: let
+        pkgs = import nixpkgs {
+          inherit system;
+          config = {
+            allowUnfree = true;
+          };
+        };
+      in {
+        devShells.system = with pkgs; {
+          default = mkShell {
+            packages = [
+              clang-tools
+            ];
+          };
+        };
+      });
 }
