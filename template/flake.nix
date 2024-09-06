@@ -21,7 +21,7 @@
           };
         };
       in {
-        devShells.system = {
+        devShells = {
           default = with pkgs;
             mkShell {
               packages = [

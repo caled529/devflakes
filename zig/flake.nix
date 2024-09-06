@@ -22,7 +22,7 @@
           };
         };
       in {
-        devShells.system = with pkgs; {
+        devShells = with pkgs; {
           default = mkShell {
             packages = [
               zig
