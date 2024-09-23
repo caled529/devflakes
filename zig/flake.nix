@@ -3,14 +3,14 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    zig.url = "github:mitchellh/zig-overlay";
+    zig-overlay.url = "github:mitchellh/zig-overlay";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
   outputs = {
     self,
     nixpkgs,
-    zig,
+    zig-overlay,
     flake-utils,
   }:
     with flake-utils.lib;
@@ -32,7 +32,7 @@
 
           dev = mkShell {
             packages = [
-              zig.lastModified
+              zig-overlay.outputs.packages.${system}.master
               zls
             ];
           };
